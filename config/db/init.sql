@@ -1,0 +1,5 @@
+CREATE USER adviser WITH PASSWORD 'adviser123';
+CREATE DATABASE adviser_db;
+GRANT ALL PRIVILEGES ON DATABASE adviser_db TO adviser;
+ALTER DATABASE adviser_db OWNER TO adviser;
+GRANT CREATE ON SCHEMA public TO adviser;
