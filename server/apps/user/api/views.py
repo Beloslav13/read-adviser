@@ -1,6 +1,6 @@
 from django.db.models import Prefetch
 from rest_framework import viewsets, permissions
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 from server.apps.adviser.models import Link
 from server.apps.user.api.serializers import UserDefaultSerializer, UserDetailSerializer
@@ -8,7 +8,7 @@ from server.apps.user.models import User
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
     queryset = User.objects.all().prefetch_related(
         Prefetch('links', queryset=Link.objects.all().select_related('category'))
     )

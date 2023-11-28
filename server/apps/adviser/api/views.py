@@ -1,6 +1,6 @@
 from django.db.models import Prefetch
 from rest_framework import viewsets, permissions
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 from server.apps.adviser.api.serializers import CategoryDefaultSerializer, LinkDefaultSerializer, \
     LinkListOrDetailSerializer, CategoryUpdateSerializer
@@ -8,7 +8,7 @@ from server.apps.adviser.models import Category, Link
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
     queryset = Category.objects.all()
     serializer_class = CategoryDefaultSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -30,7 +30,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class LinkViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = {TokenAuthentication, SessionAuthentication}
     queryset = Link.objects.all().select_related('category', 'owner').prefetch_related(
         Prefetch('owner__links', queryset=Link.objects.all().select_related('category'))
     )
