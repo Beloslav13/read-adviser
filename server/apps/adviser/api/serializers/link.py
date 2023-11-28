@@ -1,13 +1,19 @@
 from rest_framework import serializers
 
-from server.apps.adviser.api.serializers import CategorySerializer
+from server.apps.adviser.api.serializers import CategoryDefaultSerializer
 from server.apps.adviser.models import Link
-from server.apps.user.api.serializers import UserSerializer
+from server.apps.user.api.serializers import UserDefaultSerializer
 
 
-class LinkSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
-    category = CategorySerializer()
+class LinkDefaultSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Link
+        fields = ['id', 'name', 'url', 'owner', 'category']
+
+class LinkListOrDetailSerializer(serializers.ModelSerializer):
+    owner = UserDefaultSerializer()
+    category = CategoryDefaultSerializer()
 
     class Meta:
         model = Link

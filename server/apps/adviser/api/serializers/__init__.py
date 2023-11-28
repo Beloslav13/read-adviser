@@ -1,2 +1,2 @@
-from .category import CategorySerializer
-from .link import LinkSerializer
+from .category import CategoryDefaultSerializer, CategoryUpdateSerializer
+from .link import LinkDefaultSerializer, LinkListOrDetailSerializer
