@@ -1,5 +1,6 @@
 from django.db.models import Prefetch
 from rest_framework import viewsets, permissions
+from rest_framework.authentication import TokenAuthentication
 
 from server.apps.adviser.models import Link
 from server.apps.user.api.serializers import UserDefaultSerializer, UserDetailSerializer
@@ -7,11 +8,12 @@ from server.apps.user.models import User
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
     queryset = User.objects.all().prefetch_related(
         Prefetch('links', queryset=Link.objects.all().select_related('category'))
     )
     serializer_class = None
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get', 'put', 'patch', 'delete']
 
     SERIALIZER_CLS = {
