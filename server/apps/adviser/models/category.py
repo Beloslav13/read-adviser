@@ -1,6 +1,5 @@
 from django.db import models
 
-from server.apps.adviser.models import Link
 from server.apps.common.models import AbstractBaseModel
 
 class Category(AbstractBaseModel):
