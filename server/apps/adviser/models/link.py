@@ -44,6 +44,11 @@ class Link(AbstractBaseModel):
         db_index=True
     )
 
+    is_read = models.BooleanField(
+        verbose_name='Прочитано',
+        default=False
+    )
+
 
     class Meta(AbstractBaseModel.Meta):
         abstract = False

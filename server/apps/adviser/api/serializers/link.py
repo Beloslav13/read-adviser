@@ -10,7 +10,7 @@ class LinkDefaultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ['id', 'name', 'url', 'owner', 'source', 'source_name', 'category']
+        fields = ['id', 'name', 'url', 'owner', 'source', 'source_name', 'rating', 'category']
 
 
 class LinkListOrDetailSerializer(serializers.ModelSerializer):
@@ -20,4 +20,4 @@ class LinkListOrDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ['id', 'name', 'url', 'owner', 'source', 'source_name', 'category', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'url', 'owner', 'source', 'source_name', 'category', 'rating', 'created_at', 'updated_at']

@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -35,7 +36,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class LinkViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
-    queryset = Link.objects.all().select_related('category', 'owner')
+    queryset = Link.objects.filter(is_active=True).select_related('category', 'owner').prefetch_related(
+        'rating',
+        Prefetch('owner__links', queryset=Link.objects.all().select_related('category'))
+    )
     serializer_class = None
     permission_classes = [permissions.IsAuthenticated]
 
