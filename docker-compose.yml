@@ -23,6 +23,7 @@ services:
         - sleep 666d
       volumes:
         - .:/app
+        - ${DOCKER_PATH}/django-adviser-telegram:/django-adviser-telegram
       ports:
         - 8000-8010:8000-8010
       env_file:

@@ -2,26 +2,28 @@ from django.db import models
 
 from server.apps.common.models import AbstractBaseModel
 
+
+class CategoryChoices(models.IntegerChoices):
+    UNKNOWN = 10, 'Не определено'
+    VIDEO = 20, 'Видео'
+    ARTICLE = 30, 'Статья'
+    NEWS = 40, 'Новость'
+
+
 class Category(AbstractBaseModel):
 
-    class CategoryChoices(models.IntegerChoices):
-        UNKNOWN_CATEGORY = 0, 'Не определено'
-        VIDEO_CATEGORY = 10, 'Видео'
-        ARTICLE_CATEGORY = 20, 'Статья'
-        NEWS_CATEGORY = 30, 'Новость'
+    type = models.IntegerField(
+        verbose_name='Категория',
+        choices=CategoryChoices.choices,
+        default=CategoryChoices.UNKNOWN,
+        unique=True,
+        db_index=True
+    )
 
     class Meta(AbstractBaseModel.Meta):
         abstract = False
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-
-    type = models.IntegerField(
-        verbose_name='Категория',
-        choices=CategoryChoices.choices,
-        default=CategoryChoices.UNKNOWN_CATEGORY,
-        unique=True,
-        db_index=True
-    )
 
     def __str__(self):
         return self.entity_name

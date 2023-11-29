@@ -46,7 +46,9 @@ INSTALLED_APPS = [
 
     # read-adviser apps
     'server.apps.adviser',
-    'server.apps.user'
+    'server.apps.user',
+
+    'telegram.apps.TelegramConfig'
 ]
 
 AUTH_USER_MODEL = 'user.User'

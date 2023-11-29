@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models import QuerySet
 
 
 class AbstractBaseModel(models.Model):
@@ -7,6 +8,7 @@ class AbstractBaseModel(models.Model):
 
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
     updated_at = models.DateTimeField('Дата изменения', auto_now=True)
+    is_active = models.BooleanField('Активен', default=True)
 
     class Meta:
         abstract = True
@@ -21,7 +23,7 @@ class AbstractBaseModel(models.Model):
     def entity_model(self):
         return f'{self.__class__.__name__}'.lower()
 
-    def get_relations(self, entity_model: str):
+    def get_relations(self, entity_model: str) -> QuerySet | None:
         try:
             _model = ContentType.objects.get(app_label='adviser', model=entity_model)
         except ContentType.DoesNotExist:

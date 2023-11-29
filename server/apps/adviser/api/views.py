@@ -1,16 +1,20 @@
-from django.db.models import Prefetch
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
-from server.apps.adviser.api.serializers import CategoryDefaultSerializer, LinkDefaultSerializer, \
-    LinkListOrDetailSerializer, CategoryUpdateSerializer
+from server.apps.adviser.api.serializers import (
+    CategoryDefaultSerializer,
+    LinkDefaultSerializer,
+    LinkListOrDetailSerializer,
+    CategoryUpdateSerializer
+)
 from server.apps.adviser.models import Category, Link
+from server.q import query_debugger
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     queryset = Category.objects.all()
-    serializer_class = CategoryDefaultSerializer
+    serializer_class = None
     permission_classes = [permissions.IsAuthenticated]
 
     SERIALIZER_CLS = {
@@ -30,10 +34,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class LinkViewSet(viewsets.ModelViewSet):
-    authentication_classes = {TokenAuthentication, SessionAuthentication}
-    queryset = Link.objects.all().select_related('category', 'owner').prefetch_related(
-        Prefetch('owner__links', queryset=Link.objects.all().select_related('category'))
-    )
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    queryset = Link.objects.all().select_related('category', 'owner')
     serializer_class = None
     permission_classes = [permissions.IsAuthenticated]
 
@@ -52,3 +54,12 @@ class LinkViewSet(viewsets.ModelViewSet):
         if _serializer is not None:
             self.serializer_class = _serializer
         return self.serializer_class
+
+    @query_debugger
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @query_debugger
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+

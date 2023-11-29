@@ -3,9 +3,11 @@ from django.db.models.signals import post_migrate
 
 
 def create_default_category(sender, **kwargs):
+    from server.apps.adviser.models.category import CategoryChoices
     from server.apps.adviser.models import Category
+
     cat_create = []
-    for cat in Category.CategoryChoices.choices:
+    for cat in CategoryChoices.choices:
         if not Category.objects.filter(type=cat[0]).exists():
             cat_create.append(Category(type=cat[0]))
 

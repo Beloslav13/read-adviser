@@ -8,11 +8,22 @@ class User(AbstractBaseModel, AbstractUser):
     email = models.EmailField(
         'Адрес электронной почты',
         unique=True,
+        blank=True
     )
+
+    telegram_username = models.CharField(
+        'Телеграм username',
+        max_length=100,
+        blank=True,
+        null=True,
+        unique=True,
+        db_index=True
+    )
+
     middle_name = models.CharField(
         'Отчество',
         max_length=55,
-        blank=True,
+        blank=True
     )
 
     class Meta:
@@ -32,5 +43,4 @@ class User(AbstractBaseModel, AbstractUser):
         return ' '.join(filter(None, names_elements)).strip()
 
     def get_links(self):
-        # Link.objects.filter(owner=self)
         return self.get_relations('link')

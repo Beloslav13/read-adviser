@@ -19,4 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
+    sys.path.append('/django-adviser-telegram')
     main()
