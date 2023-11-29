@@ -18,9 +18,13 @@ def query_debugger(func):
 
         end_queries = len(connection.queries)
 
-        # for q in connection.queries:
-        #     for k, v in q.items():
-        #         print(v)
+        for q in connection.queries:
+            for k, v in q.items():
+                if k == 'sql':
+                    print('================================')
+                    print(v)
+                    print('================================')
+                    print()
         print(f"View (function name): {func.__name__}")
         print(f"Queries quantity: {end_queries - start_queries}")
         print(f"Execution time: {(end - start):.2f}s")

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 
 from server.apps.common.models import AbstractBaseModel
 
@@ -62,3 +63,7 @@ class Link(AbstractBaseModel):
     def entity_name(self):
         tmp = f'{self.name if self.name else ""}: {self.url}'
         return tmp
+
+    @property
+    def average_rating(self):
+        return self.rating.all().aggregate(Avg('rate'))['rate__avg']

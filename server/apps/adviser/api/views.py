@@ -1,4 +1,4 @@
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Avg
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -39,7 +39,7 @@ class LinkViewSet(viewsets.ModelViewSet):
     queryset = Link.objects.filter(is_active=True).select_related('category', 'owner').prefetch_related(
         'rating',
         Prefetch('owner__links', queryset=Link.objects.all().select_related('category'))
-    )
+    ).annotate(avg_rate=Avg('rating__rate'))
     serializer_class = None
     permission_classes = [permissions.IsAuthenticated]
 
@@ -61,7 +61,8 @@ class LinkViewSet(viewsets.ModelViewSet):
 
     @query_debugger
     def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+        response = super().list(request, *args, **kwargs)
+        return response
 
     @query_debugger
     def retrieve(self, request, *args, **kwargs):
